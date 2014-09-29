@@ -10,26 +10,27 @@
 #define __ThePicker__BoundingObject__
 
 #include <iostream>
-#include "Object.h"
+#include "Utilities.h"
+#include "ObjectHelper.h"
 
-class Bounding: public Object
+class Bounding
 {
     public:
-        Bounding(vec & in_min, vec & in_max, vec & in_center, float & in_maxValue, std::string & in_type);
+        Bounding();
         ~Bounding();
     
-        void sphere();
+        void setValues(std::vector<vec> * in_vertexList, std::vector<unsigned short> * in_vertexIndices,
+                std::vector<vec> * in_vertexNormalList, std::vector<vec> * in_textureCoordList);
+        void sphere(float & maxValue, vec & center);
         //void cube();
     
-        void hit();
+        bool hitSphere();
     
     private:
-        vec min;
-        vec max;
-        vec center;
-        float maxValue;
-        std::string type;
-
+        std::vector<vec> * vertexList;
+        std::vector<unsigned short> * vertexIndices;
+        std::vector<vec> * vertexNormalList;
+        std::vector<vec> * textureCoordList;
 };
 
 

@@ -13,17 +13,19 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 
-static void keyboardCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
-
 class Display
 {
     public:
         Display(int width, int height, std::string title);
         virtual ~Display();
+        static bool boundDraw;
+    
         bool isClosed();
         void update();
         void destroy();
         void clear(float r, float g, float b, float a);
+        bool setBoundDraw();
+        static void keyboardCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
     
     private:
         GLFWwindow* window;

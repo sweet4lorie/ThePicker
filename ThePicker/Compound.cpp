@@ -75,7 +75,7 @@ void Compound::unpack(const std::string file)
     } // if file
     
     inFile.close();
-std::cout << "DONE";
+    //std::cout << "DONE";
 }
 
 

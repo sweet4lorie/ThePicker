@@ -7,9 +7,11 @@
 //
 
 #include "Display.h"
+bool Display::boundDraw;
 
 Display::Display(int width, int height, std::string title)
 {
+    boundDraw = false;
     const char * titleChar = title.c_str();
     
 	// Initialize the library
@@ -69,7 +71,7 @@ void Display::destroy()
     exit(0);
 }
 
-static void keyboardCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
+void Display::keyboardCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
     if( action == GLFW_PRESS || action == GLFW_REPEAT ){
         switch( key ){
@@ -86,6 +88,10 @@ static void keyboardCallback(GLFWwindow* window, int key, int scancode, int acti
             break;
           case GLFW_KEY_B:
             printf("toggle rendering the bounding volumes\n");
+            if (!boundDraw)
+                boundDraw = true;
+            else
+                boundDraw = false;
             break;
           case GLFW_KEY_LEFT:
             printf("Camera Rotates Left\n");

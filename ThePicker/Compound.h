@@ -23,7 +23,7 @@ class Compound: public Object
         void unpack(const std::string file);
     
     private:
-        std::vector<GLushort> * uvIndices = new std::vector<GLushort>;
+        std::vector<GLushort> * uvIndices = new std::vector<unsigned short>;
         std::vector<vec> * textureCoordList = new std::vector<vec>;
 
 };

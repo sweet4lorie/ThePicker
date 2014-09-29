@@ -11,16 +11,10 @@
 
 Sphere::Sphere(float radius, unsigned int rings, unsigned int sectors)
 {
-    unpack(radius, rings, sectors);
-    initBuffer();
     type = "quad";
     bound = "sphere";
-}
-
-
-void Sphere::unpack(float radius, unsigned int rings, unsigned int sectors)
-{
     unpackSphere(vertexList, vertexIndices, vertexNormalList, textureCoordList, radius, rings, sectors);
+    initBuffer();
 }
 
 void Sphere::hit()
