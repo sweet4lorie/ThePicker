@@ -12,19 +12,16 @@ Bounding::Bounding()
 {
 }
 
-void Bounding::setValues(std::vector<vec> * in_vertexList, std::vector<unsigned short> * in_vertexIndices,
-                std::vector<vec> * in_vertexNormalList, std::vector<vec> * in_textureCoordList)
+void Bounding::setValues(std::vector<vec> * in_objectList, std::vector<unsigned short> * in_objectIndices)
 {
-    vertexList = in_vertexList;
-    vertexIndices = in_vertexIndices;
-    vertexNormalList = in_vertexNormalList;
-    textureCoordList = in_textureCoordList;
+    objectList = in_objectList;
+    objectIndices = in_objectIndices;
 }
 
 void Bounding::sphere(float & maxValue, vec & center)
 {
     //std::cout << center.x << " " << center.y << " " << center.z << std::endl;
-    unpackSphere(vertexList, vertexIndices, vertexNormalList, textureCoordList, maxValue, 10, 10);
+    unpackSphere(objectList, objectIndices, maxValue/2, 10, 10);
 }
 
 /*

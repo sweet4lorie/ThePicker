@@ -4,8 +4,8 @@
 #include "Shader.h"
 #include "dirent.h"
 
-int window_height = 580;
-int window_width = 740;
+int window_height = 700;
+int window_width = 700;
 
 Display display(window_width, window_height, "The Picker");
 
@@ -29,7 +29,7 @@ int main(void)
 	while (!display.isClosed())
 	{
         // Background color
-        display.clear(0.0f,0.0f, 0.0f, 1.0f);
+        display.clear(0.0f, 0.0f, 1.0f, 1.0f);
         
 		// Shaders
         shader.bind();

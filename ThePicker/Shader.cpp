@@ -38,7 +38,7 @@ Shader::Shader(const std::string & file)
 
 void Shader::bind()
 {
-    glUseProgram(program);
+    //glUseProgram(program);
     posAttrib = glGetAttribLocation(program, "position");
     glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 0, 0);
     glEnableVertexAttribArray(posAttrib);
@@ -49,6 +49,7 @@ void Shader::setColor(float r, float g, float b, float a)
     float colorVec4[] = {r, g, b, a};
     GLint myColor = glGetUniformLocation(program, "color");
     glUniform4fv(myColor, 1, colorVec4);
+    // uniform model, view, projection matrix
 }
 
 

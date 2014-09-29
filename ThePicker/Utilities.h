@@ -18,7 +18,9 @@ typedef struct
     float x, y, z;
 } vec;
 
-void translateUtil(float x, float y, float z, std::vector<vec> * vertexList);
+bool VVvecComp(vec comp1, vec comp2);
+void scaleUtil(float num, std::vector<vec> * objectList);
+void translateUtil(float x, float y, float z, std::vector<vec> * objectList);
 vec getFaceNormal(vec pt1, vec pt2, vec pt3);
 vec getDifference(vec head, vec tail);
 vec getCross(vec vector1, vec vector2);

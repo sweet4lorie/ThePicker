@@ -8,13 +8,43 @@
 
 #include "Utilities.h"
 
-void translateUtil(float x, float y, float z, std::vector<vec> * vertexList)
+bool VVvecComp(vec comp1, vec comp2)
 {
-    for(int i = 0; i < vertexList->size(); i++)
+    bool check = true;
+    
+    if (comp1.x != comp2.x)
+        check = false;
+    if (comp1.y != comp2.y)
+        check = false;
+    if (comp1.z != comp2.z)
+        check = false;
+    
+    return check;
+}
+
+void scaleUtil(float num, std::vector<vec> * objectList)
+{
+    for(int i = 0; i < objectList->size(); i++)
     {
-        vertexList->at(i).x += x;
-        vertexList->at(i).y += y;
-        vertexList->at(i).z += z;
+        if(i % 3 == 0)
+        {
+            objectList->at(i).x *= num;
+            objectList->at(i).y *= num;
+            objectList->at(i).z *= num;
+        }
+    }
+}
+
+void translateUtil(float x, float y, float z, std::vector<vec> * objectList)
+{
+    for(int i = 0; i < objectList->size(); i++)
+    {
+        if(i % 3 == 0)
+        {
+            objectList->at(i).x += x;
+            objectList->at(i).y += y;
+            objectList->at(i).z += z;
+        }
     }
 }
 

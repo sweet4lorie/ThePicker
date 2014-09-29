@@ -9,46 +9,76 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "ThePicker/Object.cpp"
-            timestampString = "433672375.883275"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "78"
-            endingLineNumber = "78"
-            landmarkName = "Object::createBound()"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ThePicker/BoundingObject.cpp"
-            timestampString = "433672375.883275"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "27"
-            endingLineNumber = "27"
-            landmarkName = "Bounding::sphere(float &amp; maxValue, vec &amp; center)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "ThePicker/ObjectHelper.cpp"
-            timestampString = "433672027.739874"
+            timestampString = "433710675.675841"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "47"
-            endingLineNumber = "47"
-            landmarkName = "unpackSphere(std::vector&lt;vec&gt; * vertexList, std::vector&lt;unsigned short&gt; * vertexIndices, std::vector&lt;vec&gt; * vertexNormalList, std::vector&lt;vec&gt; * textureCoordList, float radius, unsigned int rings, unsigned int sectors)"
+            startingLineNumber = "51"
+            endingLineNumber = "51"
+            landmarkName = "unpackSphere(std::vector&lt;vec&gt; * objectList, std::vector&lt;unsigned short&gt; * objectIndices, float radius, unsigned int rings, unsigned int sectors)"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "unpackSphere(std::__1::vector&lt;vec, std::__1::allocator&lt;vec&gt; &gt;*, std::__1::vector&lt;unsigned short, std::__1::allocator&lt;unsigned short&gt; &gt;*, float, unsigned int, unsigned int)"
+                  moduleName = "ThePicker"
+                  urlString = "file:///Users/Emi-Bear/Desktop/CS486_Graphics/ThePicker/ThePicker/ObjectHelper.cpp"
+                  timestampString = "433726642.418139"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "51"
+                  endingLineNumber = "51"
+                  offsetFromSymbolStart = "2327">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "unpackSphere(std::__1::vector&lt;vec, std::__1::allocator&lt;vec&gt; &gt;*, std::__1::vector&lt;unsigned short, std::__1::allocator&lt;unsigned short&gt; &gt;*, float, unsigned int, unsigned int)"
+                  moduleName = "ThePicker"
+                  urlString = "file:///Users/Emi-Bear/Desktop/CS486_Graphics/ThePicker/ThePicker/ObjectHelper.cpp"
+                  timestampString = "433726642.418329"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "51"
+                  endingLineNumber = "51"
+                  offsetFromSymbolStart = "2342">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ThePicker/Compound.cpp"
+            timestampString = "433720872.75544"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "75"
+            endingLineNumber = "75"
+            landmarkName = "Compound::unpack(const std::string file)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ThePicker/Object.cpp"
+            timestampString = "433719510.82775"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "81"
+            endingLineNumber = "81"
+            landmarkName = "Object::scale(float num)"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

@@ -19,18 +19,15 @@ class Bounding
         Bounding();
         ~Bounding();
     
-        void setValues(std::vector<vec> * in_vertexList, std::vector<unsigned short> * in_vertexIndices,
-                std::vector<vec> * in_vertexNormalList, std::vector<vec> * in_textureCoordList);
+        void setValues(std::vector<vec> * in_objectList, std::vector<unsigned short> * in_objectIndices);
         void sphere(float & maxValue, vec & center);
         //void cube();
     
         bool hitSphere();
     
     private:
-        std::vector<vec> * vertexList;
-        std::vector<unsigned short> * vertexIndices;
-        std::vector<vec> * vertexNormalList;
-        std::vector<vec> * textureCoordList;
+        std::vector<vec> * objectList;
+        std::vector<unsigned short> * objectIndices;
 };
 
 
