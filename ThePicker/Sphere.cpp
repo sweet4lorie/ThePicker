@@ -13,7 +13,7 @@ Sphere::Sphere(float radius, unsigned int rings, unsigned int sectors)
 {
     type = "quad";
     bound = "sphere";
-    unpackSphere(vertexList, vertexIndices, vertexNormalList, textureCoordList, radius, rings, sectors);
+    unpackSphere(&model, radius, rings, sectors);
     initBuffer();
 }
 

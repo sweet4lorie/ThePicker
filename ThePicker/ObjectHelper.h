@@ -12,8 +12,6 @@
 #include <iostream>
 #include "Utilities.h"
 
-void unpackSphere(std::vector<vec> * vertexList, std::vector<unsigned short> * vertexIndices,
-            std::vector<vec> * vertexNormalList, std::vector<vec> * textureCoordList,
-            float radius, unsigned int rings, unsigned int sectors);
+void unpackSphere(modelPackage * model, float radius, unsigned int rings, unsigned int sectors);
 
 #endif /* defined(__ThePicker__ObjectHelper__) */

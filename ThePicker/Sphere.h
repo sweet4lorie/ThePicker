@@ -24,9 +24,6 @@ class Sphere: public Object
     
         void hit();
         void unpack(float radius, unsigned int rings, unsigned int sectors);
-    
-    private:
-        std::vector<vec> * textureCoordList = new std::vector<vec>;
 };
 
 #endif /* defined(__ThePicker__Sphere__) */

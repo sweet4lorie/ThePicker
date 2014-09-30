@@ -16,161 +16,73 @@ Object::Object()
 }
 
 void Object::initBuffer(){
-    bs.setValues(boundVertexList, boundVertexIndices, boundVertexNormalList, boundTextureCoordList);
     createBound();
     
     glGenVertexArrays(1, &vertexArrayObject);
     glBindVertexArray(vertexArrayObject);
     
     glGenBuffers(NUM_BUFFERS, vertexArrayBuffers);
-    glGenBuffers(NUM_BUFFERS, &indexArrayBuffer);
-    glGenBuffers(NUM_BUFFERS, &normalArrayBuffer);
-    glGenBuffers(NUM_BUFFERS, &normalIndexArrayBuffer);
-    
-    
     glGenBuffers(NUM_BUFFERS, boundVertexArrayBuffers);
-    glGenBuffers(NUM_BUFFERS, &boundIndexArrayBuffer);
-    glGenBuffers(NUM_BUFFERS, &boundNormalArrayBuffer);
-    glGenBuffers(NUM_BUFFERS, &boundNormalIndexArrayBuffer);
 }
 
 void Object::createBound()
 {
-    // Min/Max for bounding
-    vec min;
-    min.x = 0.0;
-    min.y = 0.0;
-    min.z = 0.0;
-    vec max;
-    max.x = 0.0;
-    max.y = 0.0;
-    max.z = 0.0;
-    vec center;
-    float greatestNum;
-    
-    for(int i = 0; i < vertexList->size(); i++)
-    {
-        // find min/max
-        if (vertexList->at(i).x < min.x)
-            min.x = vertexList->at(i).x;
-        if (vertexList->at(i).x > max.x)
-            max.x = vertexList->at(i).x;
-        greatestNum = max.x - min.x;
-        
-        if (vertexList->at(i).y < min.y)
-            min.y = vertexList->at(i).y;
-        if (vertexList->at(i).y > max.y)
-            max.y = vertexList->at(i).y;
-        if ((max.x - min.x) < (max.y - min.y))
-            greatestNum = max.y - min.y;
-        
-        if (vertexList->at(i).z < min.z)
-            min.z = vertexList->at(i).z;
-        if (vertexList->at(i).z > max.z)
-            max.z = vertexList->at(i).z;
-        if (greatestNum < (max.z - min.z))
-            greatestNum = max.z - min.z;
-    }
-    center.x = (max.x + min.x)/2;
-    center.y = (max.y + min.y)/2;
-    center.z = (max.z + min.z)/2;
-    bs.sphere(greatestNum, center);
+    bs.setValues(&model, &boundModel);
+    bs.sphere();
 }
 
 void Object::scale(float num)
 {
-    for(int i = 0; i < vertexList->size(); i++)
+    for(int i = 0; i < model.vertex.size(); i++)
     {
-        vertexList->at(i).x *= num;
-        vertexList->at(i).y *= num;
-        vertexList->at(i).z *= num;
+        model.vertex[i].x *= num;
+        model.vertex[i].y *= num;
+        model.vertex[i].z *= num;
     }
-    for(int i = 0; i < boundVertexList->size(); i++)
+    for(int i = 0; i < boundModel.vertex.size(); i++)
     {
-        boundVertexList->at(i).x *= num;
-        boundVertexList->at(i).y *= num;
-        boundVertexList->at(i).z *= num;
+        boundModel.vertex[i].x *= num;
+        boundModel.vertex[i].y *= num;
+        boundModel.vertex[i].z *= num;
     }
 }
 
 void Object::translate(float x, float y, float z)
 {
-    translateUtil(x, y, z, vertexList);
-    translateUtil(x, y, z, boundVertexList);
+    translateUtil(x, y, z, &model.vertex);
+    translateUtil(x, y, z, &boundModel.vertex);
 }
 
 void Object::setBuffer()
 {
     // OBJECT
-    // = Verticies
+    // = Vertices
     glBindBuffer(GL_ARRAY_BUFFER, vertexArrayBuffers[POSITION_VB]);
-    glBufferData(GL_ARRAY_BUFFER, vertexList->size() * sizeof(vec), &vertexList->at(0), GL_STATIC_DRAW);
-    
+    glBufferData(GL_ARRAY_BUFFER, model.vertex.size() * sizeof(model.vertex[0]), &model.vertex[0], GL_STATIC_DRAW);
     glEnableVertexAttribArray(0);
-    glBindBuffer(GL_ARRAY_BUFFER, vertexArrayBuffers[POSITION_VB]);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
-    // where to start check, how big each data is, type, n/a, how much to skip, where to start
-    glBindVertexArray(1);
-
-    if (vertexIndices->size() > 0){
-        // = Indices
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexArrayBuffer);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, vertexIndices->size() * sizeof(GLushort), &vertexIndices->at(0), GL_STATIC_DRAW);
-    }
     
-    if (vertexNormalList->size() > 0){
-        // = Vertex Normals
-        glBindBuffer(GL_ARRAY_BUFFER, normalArrayBuffer);
-        glBufferData(GL_ARRAY_BUFFER, vertexNormalList->size() * sizeof(vec), &vertexNormalList->at(0), GL_STATIC_DRAW);
-    
-        glEnableVertexAttribArray(0);
-        glBindBuffer(GL_ARRAY_BUFFER, normalArrayBuffer);
-    }
-    if (normalIndices->size() > 0){
-        // = normal Indices
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, normalIndexArrayBuffer);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, normalIndices->size() * sizeof(GLushort), &normalIndices->at(0), GL_STATIC_DRAW);
-        //glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
-    }
-    VIsize = (GLint)vertexIndices->size();
+    // = Normal
+    glBindBuffer(GL_ARRAY_BUFFER, vertexArrayBuffers[NORMAL_VB]);
+    glBufferData(GL_ARRAY_BUFFER, model.normal.size() * sizeof(model.normal[0]), &model.normal[0], GL_STATIC_DRAW);
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);
 }
 
 void Object::setBoundBuffer()
 {
-   // BOUNDING
-    // = Verticies
-    glBindBuffer(GL_ARRAY_BUFFER, boundVertexArrayBuffers[POSITION_VB]);
-    glBufferData(GL_ARRAY_BUFFER, boundVertexList->size() * sizeof(vec), &boundVertexList->at(0), GL_STATIC_DRAW);
-    
+    // OBJECT
+    // = Vertices
+    glBindBuffer(GL_ARRAY_BUFFER, vertexArrayBuffers[POSITION_VB]);
+    glBufferData(GL_ARRAY_BUFFER, boundModel.vertex.size() * sizeof(boundModel.vertex[0]), &boundModel.vertex[0], GL_STATIC_DRAW);
     glEnableVertexAttribArray(0);
-    glBindBuffer(GL_ARRAY_BUFFER, boundVertexArrayBuffers[POSITION_VB]);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
-    // where to start check, how big each data is, type, n/a, how much to skip, where to start
-    glBindVertexArray(1);
-
-    if (boundVertexIndices->size() > 0){
-        // = Indices
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, boundIndexArrayBuffer);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, boundVertexIndices->size() * sizeof(GLushort), &boundVertexIndices->at(0), GL_STATIC_DRAW);
-    }
     
-    if (boundVertexNormalList->size() > 0){
-        // = Vertex Normals
-        glBindBuffer(GL_ARRAY_BUFFER, boundNormalArrayBuffer);
-        glBufferData(GL_ARRAY_BUFFER, boundVertexNormalList->size() * sizeof(vec), &boundVertexNormalList->at(0), GL_STATIC_DRAW);
-    
-        glEnableVertexAttribArray(0);
-        glBindBuffer(GL_ARRAY_BUFFER, boundNormalArrayBuffer);
-    }
-    
-    if (boundNormalIndices->size() > 0){
-        //std::cout << "\nSIZE HERE" << boundNormalIndices->size() << ;
-        // = normal Indices
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, boundNormalIndexArrayBuffer);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, boundNormalIndices->size() * sizeof(GLushort), &boundNormalIndices->at(0), GL_STATIC_DRAW);
-        //glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
-    }
-    boundVIsize = (GLint)boundVertexIndices->size();
+    // = Normal
+    glBindBuffer(GL_ARRAY_BUFFER, vertexArrayBuffers[NORMAL_VB]);
+    glBufferData(GL_ARRAY_BUFFER, boundModel.normal.size() * sizeof(boundModel.normal[0]), &boundModel.normal[0], GL_STATIC_DRAW);
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);
 }
 
 
@@ -180,19 +92,18 @@ void Object::draw(std::string drawType)
     if (drawType == "object")
     {
         setBuffer();
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexArrayBuffer);
         
         if (type == "triangle"){
-            glDrawElements(GL_TRIANGLES, VIsize, GL_UNSIGNED_SHORT, 0);
+            glDrawArrays(GL_TRIANGLE_STRIP, 0, (int)model.vertex.size());
+            //glDrawElements(GL_TRIANGLES, VIsize, GL_UNSIGNED_SHORT, 0);
         } else if (type == "quad"){
-            //glDrawArrays(GL_TRIANGLE_STRIP, 0, vertexList.size());
-            glDrawElements(GL_QUADS, VIsize, GL_UNSIGNED_SHORT, 0);
+            glDrawArrays(GL_QUAD_STRIP, 0, (int)model.vertex.size());
         }
     } else if (drawType == "bound")
     {
         setBoundBuffer();
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, boundIndexArrayBuffer);
-        glDrawElements(GL_QUADS, boundVIsize, GL_UNSIGNED_SHORT, 0);
+        //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, boundIndexArrayBuffer);
+        glDrawArrays(GL_QUAD_STRIP, 0, (int)boundModel.vertex.size());
         
     }
 
@@ -207,14 +118,10 @@ Object::~Object()
 {
     glDisableVertexAttribArray(0);
     glDeleteBuffers(1, vertexArrayBuffers);
-    glDeleteBuffers(1, &indexArrayBuffer);
-    glDeleteBuffers(1, &normalArrayBuffer);
-    glDeleteBuffers(1, &normalIndexArrayBuffer);
-    
     glDeleteBuffers(1, boundVertexArrayBuffers);
-    glDeleteBuffers(1, &boundIndexArrayBuffer);
-    glDeleteBuffers(1, &boundNormalArrayBuffer);
-    glDeleteBuffers(1, &boundNormalIndexArrayBuffer);
+    //glDeleteBuffers(1, &boundIndexArrayBuffer);
+    //glDeleteBuffers(1, &boundNormalArrayBuffer);
+    //glDeleteBuffers(1, &boundNormalIndexArrayBuffer);
     glDeleteVertexArrays(1, &vertexArrayObject);
     
 }

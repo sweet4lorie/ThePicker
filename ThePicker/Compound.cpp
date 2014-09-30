@@ -16,6 +16,12 @@ Compound::Compound(const std::string file)
 
 void Compound::unpack(const std::string file)
 {
+    std::vector<GLushort> tempVertexIndices;
+    std::vector<GLushort> tempUVIndices;
+    std::vector<GLushort> tempNormalIndices;
+    std::vector<vec> tempVectorList;
+    std::vector<vec> tempNormalList;
+    std::vector<vec> tempUVList;
     char buffer [255];
     
     // for file
@@ -34,7 +40,7 @@ void Compound::unpack(const std::string file)
             if(strncmp(buffer, "v ", 2) == 0) // is 'v '
             {
                 sscanf(buffer, "v %f %f %f", &(currentVec.x), &(currentVec.y), &(currentVec.z));
-                vertexList->push_back(currentVec);
+                tempVectorList.push_back(currentVec);
             }
             
             // texture coord
@@ -42,14 +48,14 @@ void Compound::unpack(const std::string file)
             {
                 sscanf(buffer, "vt %f %f", &(currentVec.x), &(currentVec.y));
                 currentVec.z = 0.0;
-                textureCoordList->push_back(currentVec);
+                tempUVList.push_back(currentVec);
             }
             
             // vertex normal
             else if(strncmp(buffer, "vn", 2) == 0) // is 'vn'
             {
                 sscanf(buffer, "vn %f %f %f", &(currentVec.x), &(currentVec.y), &(currentVec.z));
-                vertexNormalList->push_back(currentVec);
+                tempNormalList.push_back(currentVec);
             }
             
             // face
@@ -61,17 +67,31 @@ void Compound::unpack(const std::string file)
                                 &vertexIndex[1], &uvIndex[1], &normalIndex[1],
                                 &vertexIndex[2], &uvIndex[2], &normalIndex[2]);
                 //std::cout << vertexIndex[1] << std::endl;
-                vertexIndices->push_back(vertexIndex[0]);
-                vertexIndices->push_back(vertexIndex[1]);
-                vertexIndices->push_back(vertexIndex[2]);
-                uvIndices->push_back(uvIndex[0]);
-                uvIndices->push_back(uvIndex[1]);
-                uvIndices->push_back(uvIndex[2]);
-                normalIndices->push_back(normalIndex[0]);
-                normalIndices->push_back(normalIndex[1]);
-                normalIndices->push_back(normalIndex[2]);
+                tempVertexIndices.push_back(vertexIndex[0]);
+                tempVertexIndices.push_back(vertexIndex[1]);
+                tempVertexIndices.push_back(vertexIndex[2]);
+                tempUVIndices.push_back(uvIndex[0]);
+                tempUVIndices.push_back(uvIndex[1]);
+                tempUVIndices.push_back(uvIndex[2]);
+                tempNormalIndices.push_back(normalIndex[0]);
+                tempNormalIndices.push_back(normalIndex[1]);
+                tempNormalIndices.push_back(normalIndex[2]);
             }
         } // while
+        for (int i = 0; i < tempVertexIndices.size(); i++)
+        {
+            if (i % 3 == 0)
+            {
+                model.vertex.push_back(tempVectorList[tempVertexIndices[i]]);
+                model.vertex.push_back(tempVectorList[tempVertexIndices[i+1]]);
+                model.vertex.push_back(tempVectorList[tempVertexIndices[i+2]]);
+                
+                model.normal.push_back(tempNormalList[tempNormalIndices[i]]);
+                model.normal.push_back(tempNormalList[tempNormalIndices[i+1]]);
+                model.normal.push_back(tempNormalList[tempNormalIndices[i+2]]);
+            }
+        }
+        
     } // if file
     
     inFile.close();

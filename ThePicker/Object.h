@@ -21,17 +21,12 @@ class Object
         ~Object();
     
         //object
-        std::vector<vec> * vertexList = new std::vector<vec>;
-        std::vector<vec> * vertexNormalList = new std::vector<vec>;
-        std::vector<GLushort> * vertexIndices = new std::vector<GLushort>;
-        std::vector<GLushort> * normalIndices = new std::vector<GLushort>;
+        GLuint positionID;
+        GLuint normalID;
+        modelPackage model;
     
         // bounding
-        std::vector<vec> * boundVertexList = new std::vector<vec>;
-        std::vector<vec> * boundVertexNormalList = new std::vector<vec>;
-        std::vector<GLushort> * boundVertexIndices = new std::vector<GLushort>;
-        std::vector<GLushort> * boundNormalIndices = new std::vector<GLushort>;
-        std::vector<vec> * boundTextureCoordList = new std::vector<vec>;
+        modelPackage boundModel;
 
         std::string type;
         std::string bound;
@@ -50,7 +45,7 @@ class Object
         enum
         {
             POSITION_VB,
-            INDEX_VB,
+            NORMAL_VB,
             TEXCOORD_VB,
             NUM_BUFFERS
         };
@@ -59,15 +54,9 @@ class Object
         //object
         GLuint VIsize;
         GLuint vertexArrayBuffers[NUM_BUFFERS];
-        GLuint indexArrayBuffer;
-        GLuint normalArrayBuffer;
-        GLuint normalIndexArrayBuffer;
         // bounding
         GLuint boundVIsize;
         GLuint boundVertexArrayBuffers[NUM_BUFFERS];
-        GLuint boundIndexArrayBuffer;
-        GLuint boundNormalArrayBuffer;
-        GLuint boundNormalIndexArrayBuffer;
 
 };
 
