@@ -27,8 +27,8 @@ Display::Display(int width, int height, std::string title)
         std::cerr << "Window failed" << std::endl;
 	}
     
-    //glEnable(GL_CULL_FACE);
-    //glCullFace(GL_BACK);
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
     glShadeModel(GL_SMOOTH);
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
@@ -87,7 +87,6 @@ void Display::keyboardCallback(GLFWwindow* window, int key, int scancode, int ac
             printf("Toggle between glsl and fixed pipeline\n");
             break;
           case GLFW_KEY_B:
-            printf("toggle rendering the bounding volumes\n");
             if (!boundDraw)
                 boundDraw = true;
             else

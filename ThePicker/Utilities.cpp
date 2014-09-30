@@ -18,6 +18,17 @@ void translateUtil(float x, float y, float z, std::vector<vec> * vertexList)
     }
 }
 
+void scaleUtil(float num, std::vector<vec> * vertexList)
+{
+    for(int i = 0; i < vertexList->size(); i++)
+    {
+        vertexList->at(i).x *= num;
+        vertexList->at(i).y *= num;
+        vertexList->at(i).z *= num;
+    }
+}
+
+
 vec getFaceNormal(vec pt1, vec pt2, vec pt3)
 {
     vec norm;

@@ -39,27 +39,30 @@ void Bounding::sphere()
             min.x = objModel->vertex[i].x;
         if (objModel->vertex[i].x > max.x)
             max.x = objModel->vertex[i].x;
-        maxValue = max.x - min.x;
         
         if (objModel->vertex[i].y < min.y)
             min.y = objModel->vertex[i].y;
         if (objModel->vertex[i].y > max.y)
             max.y = objModel->vertex[i].y;
-        if ((max.x - min.x) < (max.y - min.y))
-            maxValue = max.y - min.y;
         
         if (objModel->vertex[i].z < min.z)
             min.z = objModel->vertex[i].z;
         if (objModel->vertex[i].z > max.z)
             max.z = objModel->vertex[i].z;
-        if (maxValue < (max.z - min.z))
-            maxValue = max.z - min.z;
     }
+    if (maxValue < (max.x - min.x))
+        maxValue = max.x - min.x;
+    if (maxValue < (max.y - min.y))
+        maxValue = max.y - min.y;
+    if (maxValue < (max.z - min.z))
+        maxValue = max.z - min.z;
+
     center.x = (max.x + min.x)/2;
     center.y = (max.y + min.y)/2;
     center.z = (max.z + min.z)/2;
     //std::cout << center.x << " " << center.y << " " << center.z << std::endl;
     unpackSphere(model, maxValue/2, 10, 10);
+    translateUtil(center.x, center.y, center.z, &model->vertex);
 }
 
 /*

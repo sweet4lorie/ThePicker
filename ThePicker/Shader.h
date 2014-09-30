@@ -20,6 +20,8 @@ class Shader
     public:
         Shader(const std::string & file);
         void bind();
+        void bindFixed();
+        void setMatrix();
         void setColor(float r, float g, float b, float a);
         ~Shader();
     private:

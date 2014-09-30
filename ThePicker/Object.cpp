@@ -33,18 +33,8 @@ void Object::createBound()
 
 void Object::scale(float num)
 {
-    for(int i = 0; i < model.vertex.size(); i++)
-    {
-        model.vertex[i].x *= num;
-        model.vertex[i].y *= num;
-        model.vertex[i].z *= num;
-    }
-    for(int i = 0; i < boundModel.vertex.size(); i++)
-    {
-        boundModel.vertex[i].x *= num;
-        boundModel.vertex[i].y *= num;
-        boundModel.vertex[i].z *= num;
-    }
+    scaleUtil(num, &model.vertex);
+    scaleUtil(num, &boundModel.vertex);
 }
 
 void Object::translate(float x, float y, float z)
@@ -65,8 +55,8 @@ void Object::setBuffer()
     // = Normal
     glBindBuffer(GL_ARRAY_BUFFER, vertexArrayBuffers[NORMAL_VB]);
     glBufferData(GL_ARRAY_BUFFER, model.normal.size() * sizeof(model.normal[0]), &model.normal[0], GL_STATIC_DRAW);
-    glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);
+    glEnableVertexAttribArray(2);
+    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, 0);
 }
 
 void Object::setBoundBuffer()
@@ -81,8 +71,8 @@ void Object::setBoundBuffer()
     // = Normal
     glBindBuffer(GL_ARRAY_BUFFER, vertexArrayBuffers[NORMAL_VB]);
     glBufferData(GL_ARRAY_BUFFER, boundModel.normal.size() * sizeof(boundModel.normal[0]), &boundModel.normal[0], GL_STATIC_DRAW);
-    glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);
+    glEnableVertexAttribArray(2);
+    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, 0);
 }
 
 
@@ -119,9 +109,6 @@ Object::~Object()
     glDisableVertexAttribArray(0);
     glDeleteBuffers(1, vertexArrayBuffers);
     glDeleteBuffers(1, boundVertexArrayBuffers);
-    //glDeleteBuffers(1, &boundIndexArrayBuffer);
-    //glDeleteBuffers(1, &boundNormalArrayBuffer);
-    //glDeleteBuffers(1, &boundNormalIndexArrayBuffer);
     glDeleteVertexArrays(1, &vertexArrayObject);
     
 }

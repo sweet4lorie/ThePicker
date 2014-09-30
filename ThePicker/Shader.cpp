@@ -35,6 +35,15 @@ Shader::Shader(const std::string & file)
     CheckShaderError(program, GL_VALIDATE_STATUS, true, "Error: Program Link Failed");
 }
 
+void Shader::setMatrix()
+{
+    // model view
+    //glMatrixMode();
+    
+    
+    //projection
+    //incomingVertex
+}
 
 void Shader::bind()
 {
@@ -42,6 +51,11 @@ void Shader::bind()
     posAttrib = glGetAttribLocation(program, "position");
     glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 0, 0);
     glEnableVertexAttribArray(posAttrib);
+}
+
+void Shader::bindFixed()
+{
+    glUseProgram(0);
 }
 
 void Shader::setColor(float r, float g, float b, float a)
