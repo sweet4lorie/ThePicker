@@ -1,10 +1,13 @@
 //
-//  Display.h
 //  ThePicker
+//  Display.h
 //
-//  Created by Emily Chiang on 9/25/14.
-//  Copyright (c) 2014 Emily Chiang. All rights reserved.
+//  Header for display; helps handle display
 //
+//  Emily Chiang
+//  emily.mchiang@gmail.com
+//
+
 
 #ifndef __ThePicker__Display__
 #define __ThePicker__Display__

@@ -1,9 +1,11 @@
 //
-//  Shader.cpp
 //  ThePicker
+//  Shader.cpp
 //
-//  Created by Emily Chiang on 9/25/14.
-//  Copyright (c) 2014 Emily Chiang. All rights reserved.
+//  Helps handle setting up, editing, and calling shader
+//
+//  Emily Chiang
+//  emily.mchiang@gmail.com
 //
 
 #include "Shader.h"

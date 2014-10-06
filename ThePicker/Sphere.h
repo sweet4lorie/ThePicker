@@ -1,9 +1,11 @@
 //
-//  Sphere.h
 //  ThePicker
+//  Sphere.
 //
-//  Created by Emily Chiang on 9/21/14.
-//  Copyright (c) 2014 Emily Chiang. All rights reserved.
+//  Header for: handles calculations to draw at sphere object
+//
+//  Emily Chiang
+//  emily.mchiang@gmail.com
 //
 
 #ifndef __ThePicker__Sphere__

@@ -1,9 +1,11 @@
 //
-//  Utilities.cpp
 //  ThePicker
+//  Utilities.cpp
 //
-//  Created by Emily Chiang on 9/23/14.
-//  Copyright (c) 2014 Emily Chiang. All rights reserved.
+//  Helps with various calculation functions
+//
+//  Emily Chiang
+//  emily.mchiang@gmail.com
 //
 
 #include "Utilities.h"

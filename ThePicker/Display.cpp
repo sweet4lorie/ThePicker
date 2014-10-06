@@ -1,9 +1,11 @@
 //
-//  Display.cpp
 //  ThePicker
+//  Display.cpp
 //
-//  Created by Emily Chiang on 9/25/14.
-//  Copyright (c) 2014 Emily Chiang. All rights reserved.
+//  Helps handle display including keyboard
+//
+//  Emily Chiang
+//  emily.mchiang@gmail.com
 //
 
 #include "Display.h"

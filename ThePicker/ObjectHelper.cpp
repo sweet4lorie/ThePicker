@@ -1,9 +1,11 @@
 //
-//  ObjectHelper.cpp
 //  ThePicker
+//  ObjectHelper.cpp
 //
-//  Created by Emily Chiang on 9/28/14.
-//  Copyright (c) 2014 Emily Chiang. All rights reserved.
+//  Helps draws common objects like the sphere
+//
+//  Emily Chiang
+//  emily.mchiang@gmail.com
 //
 
 #include "ObjectHelper.h"

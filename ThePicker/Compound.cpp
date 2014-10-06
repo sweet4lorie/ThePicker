@@ -1,10 +1,13 @@
 //
-//  Compound.cpp
 //  ThePicker
+//  Compound.cpp
 //
-//  Created by Emily Chiang on 9/3/14.
-//  Copyright (c) 2014 Emily Chiang. All rights reserved.
+//  Handles calculations to draw from an obj file
 //
+//  Emily Chiang
+//  emily.mchiang@gmail.com
+//
+
 
 #include "Compound.h"
 

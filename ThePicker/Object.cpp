@@ -1,13 +1,16 @@
 //
-//  Object.cpp
 //  ThePicker
+//  Object.cpp
 //
-//  Created by Emily Chiang on 9/26/14.
-//  Copyright (c) 2014 Emily Chiang. All rights reserved.
+//  Base class for creating objects
+//  Handles basic transformations, and draws, set buffer
+//  for both object and its bounding.
+//
+//  Emily Chiang
+//  emily.mchiang@gmail.com
 //
 
 #include "Object.h"
-
 
 Object::Object()
 {

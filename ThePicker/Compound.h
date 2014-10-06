@@ -1,9 +1,11 @@
 //
-//  Compound.h
 //  ThePicker
+//  Compound.cpp
 //
-//  Created by Emily Chiang on 9/3/14.
-//  Copyright (c) 2014 Emily Chiang. All rights reserved.
+//  Header for: Handles calculations to draw from an obj file
+//
+//  Emily Chiang
+//  emily.mchiang@gmail.com
 //
 
 #ifndef __BunnyModel__getPlyModel__

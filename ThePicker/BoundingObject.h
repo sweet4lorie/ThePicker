@@ -1,10 +1,14 @@
 //
-//  BoundingObject.h
 //  ThePicker
+//  BoundingObject.h
 //
-//  Created by Emily Chiang on 9/28/14.
-//  Copyright (c) 2014 Emily Chiang. All rights reserved.
+//  Header for: Handles calculations to draw sphere bounding
+//  appropriately over the object
 //
+//  Emily Chiang
+//  emily.mchiang@gmail.com
+//
+
 
 #ifndef __ThePicker__BoundingObject__
 #define __ThePicker__BoundingObject__
