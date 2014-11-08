@@ -1,5 +1,9 @@
 # Created by https://www.gitignore.io
 
+.DS_Store
+ThePicker.xcodeproj/project.pbxproj
+
+
 ### Xcode ###
 build/
 *.pbxuser
