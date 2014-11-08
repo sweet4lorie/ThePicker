@@ -15,7 +15,7 @@
 
 #include <iostream>
 #include "Utilities.h"
-#include "ObjectHelper.h"
+#include "ObjectUnpack.h"
 
 class Bounding
 {
@@ -23,15 +23,17 @@ class Bounding
         Bounding();
         ~Bounding();
     
+        void calcValues();
         void setValues(modelPackage * in_objModel, modelPackage * in_model);
-        void sphere();
-        //void cube();
-    
-        bool hitSphere();
+        void box();
     
     private:
-        modelPackage * model;
-        modelPackage * objModel;
+        modelPackage * _model;
+        modelPackage * _objModel;
+        Vec3 _min;
+        Vec3 _max;
+        float _maxValue = 0;
+        Vec3 _center;
 };
 
 

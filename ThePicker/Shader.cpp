@@ -16,43 +16,34 @@ static GLuint CreateShader(const std::string & text, GLenum shaderType);
 
 Shader::Shader(const std::string & file)
 {
-    program = glCreateProgram();
-    shaders[0] = CreateShader(LoadShader(file + ".vs"), GL_VERTEX_SHADER);
-    shaders[1] = CreateShader(LoadShader(file + ".fs"), GL_FRAGMENT_SHADER);
+    _program = glCreateProgram();
+    _shaders[0] = CreateShader(LoadShader(file + ".vs"), GL_VERTEX_SHADER);
+    _shaders[1] = CreateShader(LoadShader(file + ".fs"), GL_FRAGMENT_SHADER);
     
     for(unsigned int i = 0; i < NUM_SHADERS; i++)
     {
-        glAttachShader(program, shaders[i]);
+        glAttachShader(_program, _shaders[i]);
     }
     
     // what part to read in from what variable
-    //glBindAttribLocation(program, 0, "position");
-    glBindFragDataLocation(program, 0, "fragData");
+    glBindFragDataLocation(_program, 0, "fragData");
     
     // link and validate
-    glLinkProgram(program);
-    CheckShaderError(program, GL_LINK_STATUS, true, "Error: Program Link Failed");
+    glLinkProgram(_program);
+    CheckShaderError(_program, GL_LINK_STATUS, true, "Error: Program Link Failed");
 
-    glValidateProgram(program);
-    CheckShaderError(program, GL_VALIDATE_STATUS, true, "Error: Program Link Failed");
-}
-
-void Shader::setMatrix()
-{
-    // model view
-    //glMatrixMode();
+    glValidateProgram(_program);
+    CheckShaderError(_program, GL_VALIDATE_STATUS, true, "Error: Program Link Failed");
     
-    
-    //projection
-    //incomingVertex
+    // uniform variables
+    _uniforms[0] = glGetUniformLocation(_program, "ModelViewMatrix");
+    _uniforms[1] = glGetUniformLocation(_program, "ProjectionMatrix");
 }
 
 void Shader::bind()
 {
-    glUseProgram(program);
-    posAttrib = glGetAttribLocation(program, "position");
-    glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 0, 0);
-    glEnableVertexAttribArray(posAttrib);
+    glUseProgram(_program);
+
 }
 
 void Shader::bindFixed()
@@ -60,22 +51,32 @@ void Shader::bindFixed()
     glUseProgram(0);
 }
 
-void Shader::setColor(float r, float g, float b, float a)
+void Shader::update(const Camera & camera, Object & obj)
 {
-    float colorVec4[] = {r, g, b, a};
-    GLint myColor = glGetUniformLocation(program, "color");
-    glUniform4fv(myColor, 1, colorVec4);
+    Mat4 MV = camera.myModelView * obj.getModelMatrix();
+    Mat4 P = camera.myProjection;
+    
+    glUniformMatrix4fv(_uniforms[0], 1, GL_FALSE, &MV[0]);
+    glUniformMatrix4fv(_uniforms[1], 1, GL_FALSE, &P[0]);
+    
 }
 
+void Shader::setColor(float r, float g, float b, float a)
+{
+    
+    float colorVec4[] = {r, g, b, a};
+    GLint myColor = glGetUniformLocation(_program, "color");
+    glUniform4fv(myColor, 1, colorVec4);
+}
 
 Shader::~Shader()
 {
     for(unsigned int i = 0; i < NUM_SHADERS; i++)
     {
-        glDetachShader(program, shaders[i]);
-        glDeleteShader(shaders[i]);
+        glDetachShader(_program, _shaders[i]);
+        glDeleteShader(_shaders[i]);
     }
-    glDeleteProgram(program);
+    glDeleteProgram(_program);
 }
 
 
@@ -91,7 +92,7 @@ static GLuint CreateShader(const std::string & text, GLenum shaderType)
     const GLchar* shaderString[1];
     GLint shaderStringLength[1];
     shaderString[0] = text.c_str();
-    shaderStringLength[0] = text.length();
+    shaderStringLength[0] = (int)text.length();
     
     glShaderSource(shader, 1, shaderString, shaderStringLength);
     glCompileShader(shader);

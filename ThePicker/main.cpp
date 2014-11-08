@@ -1,56 +1,105 @@
+//
+//  ThePicker
+//  main.cpp
+//
+//  main file for ThePicker
+//
+//  Emily Chiang
+//  emily.mchiang@gmail.com
+//
+
 #include "Display.h"
 #include "Sphere.h"
 #include "Compound.h"
 #include "Shader.h"
 #include "dirent.h"
 
-int window_height = 600;
+int window_height = 550;
 int window_width = 650;
+float const win_aspect = (float)window_width / (float)window_height;
 
+// seteup Variables
+static bool fixedDraw = false;
+static bool boundDraw = false;
+
+static void keyboardCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
 Display display(window_width, window_height, "The Picker");
+
+// Setup Objects
+std::vector<Object> objList;
+Object luff;
+Object cube;
+
+// Camera
+Camera camera;
+double * mouseX = new double;
+double * mouseY = new double;
+
 
 int main(void)
 {
-    // Setup Objects
-    Compound luff("luff.obj");
-    Compound cube("cube.obj");
-    Sphere sphere(0.5, 15, 15);
+    luff.setCompound("luff.obj");
+    luff.scale(0.07);
+    luff.translate(Vec3(-0.6, -0.6, -0.5));
     
-    luff.scale(.05);
-    luff.translate(0, 0, -1);
-    cube.scale(.5);
-    cube.translate(-0.8, -0.5, -1);
-    sphere.translate(0.5, 0, -1);
+    cube.setCompound("cube.obj");
+    cube.translate(Vec3(0.6, -0.5, -0.5));
+    cube.scale(0.5);
     
-    Shader shader("shader");
-    Shader shader_red("shader");
+    objList.push_back(luff);
+    objList.push_back(cube);
+
+    Shader shader("objShader");
+    Shader bbxShader("bbxShader");
+    
+    glfwSetKeyCallback(display.window, keyboardCallback);
     
 	// Loop until the user closes the window
 	while (!display.isClosed())
 	{
+        // Camera
+        glfwGetCursorPos(display.window, mouseX, mouseY);
+        camera.setupCamera(win_aspect);
+        camera.setMouseLocation(float(*mouseX), float(*mouseY));
+        
         // Background color
-        display.clear(0.0f, 0.0f, 0.5f, 1.0f);
-        
-		// Shaders
-        shader.bind();
-        shader.setColor(1.0, 0.5, 0.0, 1.0);
-        
+        display.clear(0.0f, 0.0f, 0.0f, 1.0f);
+
         // Render Objects
-        cube.setBuffer();
-        cube.draw();
-        
-        luff.draw();
-        shader.bind();
-        sphere.draw();
-        if (display.boundDraw)
+        for(int i = 0; i < objList.size(); i++)
         {
-            shader.bind();
-            shader.setColor(1.0, 0.0, 0.0, 1.0);
-            luff.draw("bound");
-            sphere.draw("bound");
-            cube.draw("bound");
+            // Shaders
+            if (fixedDraw)
+                shader.bindFixed();
+            else
+                shader.bind();
+            // Object is hit
+            if (GLFW_PRESS == glfwGetMouseButton(display.window, GLFW_MOUSE_BUTTON_1) &&
+				objList[i].hit(camera.getRay(window_width, window_height)))
+            {
+                shader.setColor(1.0, 1.0, 1.0, 1.0);
+            }
+            // Object is not hit
+            else
+                shader.setColor(1.0, 0.5, 0.0, 1.0);
+            
+            // Draw and Shade each object individually
+            shader.update(camera, objList[i]);
+            objList[i].draw();
+            
+            // bounding boxes
+            // Shaders
+            if (boundDraw)
+            {
+                if (fixedDraw)
+                    bbxShader.bindFixed();
+                else
+                    bbxShader.bind();
+                bbxShader.setColor(1.0, 0.0, 0.0, 1.0);
+                bbxShader.update(camera, objList[i]);
+                objList[i].draw("bound");
+            }
         }
-        
         // Switch buffer and polling
 		display.update();
 	}
@@ -58,3 +107,50 @@ int main(void)
     display.destroy();
 	return 0;
 }
+
+
+void keyboardCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+    if( action == GLFW_PRESS || action == GLFW_REPEAT ){
+        switch( key ){
+          case GLFW_KEY_ESCAPE:
+          case GLFW_KEY_Q:
+            glfwSetWindowShouldClose(window, GL_TRUE);
+            break;
+          case GLFW_KEY_H:
+            printf("Help Message\n");
+            // help message
+            break;
+          case GLFW_KEY_G:
+            // fixed draw
+            if (!fixedDraw)
+                fixedDraw = true;
+            else
+                fixedDraw = false;
+            break;
+          case GLFW_KEY_B:
+            // draw bounding
+            if (!boundDraw)
+                boundDraw = true;
+            else
+                boundDraw = false;
+            break;
+          case GLFW_KEY_LEFT:
+            printf("Camera Rotates Left\n");
+            break;
+          case GLFW_KEY_RIGHT:
+            printf("Camera Rotates Right\n");
+            break;
+          case GLFW_KEY_UP:
+            printf("Camera Rotates Up\n");
+            break;
+          case GLFW_KEY_DOWN:
+            printf("Camera Rotates Down\n");
+            break;
+          default:
+            fprintf( stderr, "You pushed '%c' (%d).\n", key, key );
+            break;
+        }
+    }
+}
+

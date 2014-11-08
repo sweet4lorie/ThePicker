@@ -14,104 +14,120 @@
 
 Object::Object()
 {
-    type = "triangle";
-    bound = "sphere";
+    _obj = "new";
+    bound = "box";
+    initBuffer();
 }
+
+/*
+void Object::setSphere(float radius, unsigned int rings, unsigned int sectors)
+{
+    if (_obj == "new")
+    {
+        type = "quad";
+        bound = "sphere";
+        _obj = "sphere";
+        unpackSphere(model, radius, rings, sectors);
+    }
+}
+*/
+
+void Object::setCompound(const std::string file)
+{
+    if (_obj == "new")
+    {
+        bound = "box";
+        _obj = "compound";
+        unpackCompound(&model, file);
+        initBuffer();
+    }
+}
+
+
+bool Object::hit(ray myRay)
+{
+    bool hitStatus = false;
+    if (bound == "box")
+    {
+        hitStatus = hitBox(&boundModel, &MV, myRay);
+    }
+    return hitStatus;
+}
+
 
 void Object::initBuffer(){
     createBound();
     
-    glGenVertexArrays(1, &vertexArrayObject);
-    glBindVertexArray(vertexArrayObject);
+    glGenVertexArrays(1, &_vertexArrayObject);
+    glBindVertexArray(_vertexArrayObject);
     
-    glGenBuffers(NUM_BUFFERS, vertexArrayBuffers);
-    glGenBuffers(NUM_BUFFERS, boundVertexArrayBuffers);
+    glGenBuffers(NUM_BUFFERS, _vertexArrayBuffers);
+    glGenBuffers(NUM_BUFFERS, _boundVertexArrayBuffers);
 }
+
 
 void Object::createBound()
 {
-    bs.setValues(&model, &boundModel);
-    bs.sphere();
-}
-
-void Object::scale(float num)
-{
-    scaleUtil(num, &model.vertex);
-    scaleUtil(num, &boundModel.vertex);
-}
-
-void Object::translate(float x, float y, float z)
-{
-    translateUtil(x, y, z, &model.vertex);
-    translateUtil(x, y, z, &boundModel.vertex);
+    _bs.setValues(&model, &boundModel);
+    _bs.box();
 }
 
 void Object::setBuffer()
 {
     // OBJECT
     // = Vertices
-    glBindBuffer(GL_ARRAY_BUFFER, vertexArrayBuffers[POSITION_VB]);
+    glBindBuffer(GL_ARRAY_BUFFER, _vertexArrayBuffers[POSITION_VB]);
     glBufferData(GL_ARRAY_BUFFER, model.vertex.size() * sizeof(model.vertex[0]), &model.vertex[0], GL_STATIC_DRAW);
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
     
     // = Normal
-    glBindBuffer(GL_ARRAY_BUFFER, vertexArrayBuffers[NORMAL_VB]);
+    glBindBuffer(GL_ARRAY_BUFFER, _vertexArrayBuffers[NORMAL_VB]);
     glBufferData(GL_ARRAY_BUFFER, model.normal.size() * sizeof(model.normal[0]), &model.normal[0], GL_STATIC_DRAW);
     glEnableVertexAttribArray(2);
-    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, 0);
+    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 }
+
 
 void Object::setBoundBuffer()
 {
     // OBJECT
     // = Vertices
-    glBindBuffer(GL_ARRAY_BUFFER, vertexArrayBuffers[POSITION_VB]);
+    glBindBuffer(GL_ARRAY_BUFFER, _vertexArrayBuffers[POSITION_VB]);
     glBufferData(GL_ARRAY_BUFFER, boundModel.vertex.size() * sizeof(boundModel.vertex[0]), &boundModel.vertex[0], GL_STATIC_DRAW);
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
-    
-    // = Normal
-    glBindBuffer(GL_ARRAY_BUFFER, vertexArrayBuffers[NORMAL_VB]);
-    glBufferData(GL_ARRAY_BUFFER, boundModel.normal.size() * sizeof(boundModel.normal[0]), &boundModel.normal[0], GL_STATIC_DRAW);
-    glEnableVertexAttribArray(2);
-    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, 0);
 }
 
 
 void Object::draw(std::string drawType)
 {
-    glBindVertexArray(vertexArrayObject);
+    glBindVertexArray(_vertexArrayObject);
+    
     if (drawType == "object")
     {
         setBuffer();
-        
-        if (type == "triangle"){
-            glDrawArrays(GL_TRIANGLE_STRIP, 0, (int)model.vertex.size());
-            //glDrawElements(GL_TRIANGLES, VIsize, GL_UNSIGNED_SHORT, 0);
-        } else if (type == "quad"){
-            glDrawArrays(GL_QUAD_STRIP, 0, (int)model.vertex.size());
-        }
-    } else if (drawType == "bound")
+        glDrawArrays(GL_TRIANGLES, 0, (int)model.vertex.size());
+    }
+    else if (drawType == "bound")
     {
         setBoundBuffer();
-        //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, boundIndexArrayBuffer);
-        glDrawArrays(GL_QUAD_STRIP, 0, (int)boundModel.vertex.size());
+        glDrawArrays(GL_LINES, 0, (int)boundModel.vertex.size());
         
     }
 
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-    glBindVertexArray(0);
+//    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+ //   glBindVertexArray(0);
     
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindVertexArray(0);
+    glDisableVertexAttribArray(0);
 }
+
 
 Object::~Object()
 {
     glDisableVertexAttribArray(0);
-    glDeleteBuffers(1, vertexArrayBuffers);
-    glDeleteBuffers(1, boundVertexArrayBuffers);
-    glDeleteVertexArrays(1, &vertexArrayObject);
+    glDeleteBuffers(1, _vertexArrayBuffers);
+    glDeleteBuffers(1, _boundVertexArrayBuffers);
+    glDeleteVertexArrays(1, &_vertexArrayObject);
     
 }

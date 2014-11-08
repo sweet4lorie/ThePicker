@@ -17,32 +17,37 @@
 #define GLFW_INCLUDE_GLU
 #include <GLFW/glfw3.h>
 #include <OpenGL/gl3.h>
+#include "ObjectUnpack.h"
+#include "ObjectHit.h"
 #include "BoundingObject.h"
+#include "Transform.h"
 
-class Object
+class Object : public Transform
 {
     public:
         Object();
         ~Object();
     
-        //object
+        // set object
+        void setSphere(float radius, unsigned int rings, unsigned int sectors);
+        void setCompound(const std::string file);
+    
+        // object
         GLuint positionID;
         GLuint normalID;
         modelPackage model;
     
         // bounding
         modelPackage boundModel;
-
-        std::string type;
         std::string bound;
 
         void initBuffer();
-        void scale(float num);
-        void translate(float x, float y, float z);
 
         void setBuffer();
         void setBoundBuffer();
+    
         void draw(std::string type = "object");
+        bool hit(ray myRay);
         void createBound();
         void clean();
     
@@ -54,14 +59,18 @@ class Object
             TEXCOORD_VB,
             NUM_BUFFERS
         };
-        Bounding bs;
-        GLuint vertexArrayObject;
+    
+        Bounding _bs;
+        GLuint _vertexArrayObject;
+    
         //object
-        GLuint VIsize;
-        GLuint vertexArrayBuffers[NUM_BUFFERS];
+        std::string _obj;
+        GLuint _VIsize;
+        GLuint _vertexArrayBuffers[NUM_BUFFERS];
+    
         // bounding
-        GLuint boundVIsize;
-        GLuint boundVertexArrayBuffers[NUM_BUFFERS];
+        GLuint _boundVIsize;
+        GLuint _boundVertexArrayBuffers[NUM_BUFFERS];
 
 };
 
