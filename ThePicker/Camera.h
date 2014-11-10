@@ -24,8 +24,8 @@ class Camera
         void rotateCameraLeft(float degrees, float *eyePosition, float *centerPostion, float *upVector);
         void rotateCameraUp(float degrees, float *eyePosition, float *centerPosition, float *upVector);
     
-        void setMouseLocation(const float & in_mouseX, const float & in_mouseY);
-        ray getRay(float win_width, float win_height);
+        //void setMouseLocation(const float & in_mouseX, const float & in_mouseY);
+        ray getRay(float win_width, float win_height, const float & in_mouseX, const float & in_mouseY);
     
         void myPerspective(float fovy, const float aspect, float zNear, float zFar);
         void myLookAt(Vec3 eye, Vec3 center, Vec3 up);

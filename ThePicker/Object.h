@@ -47,6 +47,7 @@ class Object : public Transform
         void setBoundBuffer();
     
         void draw(std::string type = "object");
+        bool inView(float (& projectionMatrix)[16], Mat4 & modelViewMatrix);
         bool hit(ray myRay);
         void createBound();
         void clean();

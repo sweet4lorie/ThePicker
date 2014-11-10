@@ -32,15 +32,18 @@ Object cube;
 
 // Camera
 Camera camera;
-double * mouseX = new double;
-double * mouseY = new double;
-
+double * mouseXPress = new double;
+double * mouseYPress = new double;
+double * mouseXRelease = new double;
+double * mouseYRelease = new double;
+bool checkPress = false;
+bool checkRelease = false;
 
 int main(void)
 {
     luff.setCompound("luff.obj");
     luff.scale(0.07);
-    luff.translate(Vec3(-0.6, -0.6, -0.5));
+    luff.translate(Vec3(-1.5, -0.6, -0.5));
     
     cube.setCompound("cube.obj");
     cube.translate(Vec3(0.6, -0.5, -0.5));
@@ -58,9 +61,29 @@ int main(void)
 	while (!display.isClosed())
 	{
         // Camera
-        glfwGetCursorPos(display.window, mouseX, mouseY);
         camera.setupCamera(win_aspect);
-        camera.setMouseLocation(float(*mouseX), float(*mouseY));
+        
+        // Mouse checks
+        // only set if just released; order of checks matters
+        if (GLFW_RELEASE == glfwGetMouseButton(display.window, GLFW_MOUSE_BUTTON_1) && checkPress)
+        {
+            glfwGetCursorPos(display.window, mouseXRelease, mouseYRelease);
+            //std::cout<< "mouse released : " << *mouseXRelease << " " << *mouseYRelease << std::endl;
+            checkRelease = true;
+        }
+        else
+        {
+            checkRelease = false;
+        }
+        if (GLFW_PRESS == glfwGetMouseButton(display.window, GLFW_MOUSE_BUTTON_1))
+        {
+            glfwGetCursorPos(display.window, mouseXPress, mouseYPress);
+            checkPress = true;
+        }
+        else
+        {
+            checkPress = false;
+        }
         
         // Background color
         display.clear(0.0f, 0.0f, 0.0f, 1.0f);
@@ -73,12 +96,18 @@ int main(void)
                 shader.bindFixed();
             else
                 shader.bind();
+            
+            
             // Object is hit
+            glfwGetCursorPos(display.window, mouseXPress, mouseYPress);
             if (GLFW_PRESS == glfwGetMouseButton(display.window, GLFW_MOUSE_BUTTON_1) &&
-				objList[i].hit(camera.getRay(window_width, window_height)))
+				objList[i].hit(camera.getRay(window_width, window_height, float(*mouseXPress), float(*mouseYPress))))
             {
                 shader.setColor(1.0, 1.0, 1.0, 1.0);
             }
+            // cull object
+            else if (!objList[i].inView(camera.myProjection, camera.myModelView))
+                shader.setColor(1.0, 1.0, 1.0, 0.0);
             // Object is not hit
             else
                 shader.setColor(1.0, 0.5, 0.0, 1.0);
@@ -87,7 +116,7 @@ int main(void)
             shader.update(camera, objList[i]);
             objList[i].draw();
             
-            // bounding boxes
+            // == bounding boxes
             // Shaders
             if (boundDraw)
             {

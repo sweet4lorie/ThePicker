@@ -27,6 +27,8 @@ void Bounding::box()
     unpackBox(_model, _min, _max);
 }
 
+
+
 Bounding::~Bounding()
 {
 }

@@ -43,6 +43,10 @@ void Object::setCompound(const std::string file)
     }
 }
 
+bool Object::inView(float (& projectionMatrix)[16], Mat4 & modelViewMatrix)
+{
+    return checkView(&boundModel, projectionMatrix, modelViewMatrix);
+}
 
 bool Object::hit(ray myRay)
 {

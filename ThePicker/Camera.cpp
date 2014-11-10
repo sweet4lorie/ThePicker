@@ -25,14 +25,18 @@ void Camera::setupCamera(float const win_aspect)
     myLookAt(_eyePosition, _centerPosition, _upVector);
 }
 
+/*
 void Camera::setMouseLocation(const float & in_mouseX, const float & in_mouseY)
 {
     _mouseX = in_mouseX;
     _mouseY = in_mouseY;
 }
+*/
 
-ray Camera::getRay(float win_width, float win_height)
+ray Camera::getRay(float win_width, float win_height, const float & in_mouseX, const float & in_mouseY)
 {
+    _mouseX = in_mouseX;
+    _mouseY = in_mouseY;
     ray myRay;
     
     float x = (2.0f * _mouseX) / win_width - 1.0f;
