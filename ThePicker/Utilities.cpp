@@ -32,14 +32,15 @@ float getMin(float a, float b)
 
 plane planeNormalize(float * in_plane)
 {
-    float l = 1.0/sqrt(in_plane[0] * in_plane[0] + in_plane[1] * in_plane[1] + in_plane[2] * in_plane[2]);
+    //float l = sqrt(in_plane[0] * in_plane[0] + in_plane[1] * in_plane[1] + in_plane[2] * in_plane[2]);
     
     Vec3 tempV = {in_plane[0], in_plane[1], in_plane[2]};
     tempV.normalize();
+    float l = tempV.length();
     
     plane tempP;
     tempP.normal = tempV;
-    tempP.offset = in_plane[3] * l;
+    tempP.offset = in_plane[3] / l;
     
     return tempP;
 }

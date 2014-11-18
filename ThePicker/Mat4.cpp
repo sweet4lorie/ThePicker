@@ -1,3 +1,13 @@
+//
+//  ThePicker
+//  Mat4.cpp
+//
+//  4x4 Matrix class
+//
+//  Emily Chiang
+//  emily.mchiang@gmail.com
+//
+
 #include "Mat4.h"
 #include "Vec3.h"
 

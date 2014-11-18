@@ -19,19 +19,6 @@ Object::Object()
     initBuffer();
 }
 
-/*
-void Object::setSphere(float radius, unsigned int rings, unsigned int sectors)
-{
-    if (_obj == "new")
-    {
-        type = "quad";
-        bound = "sphere";
-        _obj = "sphere";
-        unpackSphere(model, radius, rings, sectors);
-    }
-}
-*/
-
 void Object::setCompound(const std::string file)
 {
     if (_obj == "new")
@@ -90,6 +77,12 @@ void Object::setBuffer()
     glBufferData(GL_ARRAY_BUFFER, model.normal.size() * sizeof(model.normal[0]), &model.normal[0], GL_STATIC_DRAW);
     glEnableVertexAttribArray(2);
     glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+    
+    // = Texture
+    glBindBuffer(GL_ARRAY_BUFFER, _vertexArrayBuffers[TEXCOORD_VB]);
+    glBufferData(GL_ARRAY_BUFFER, model.normal.size() * sizeof(model.texture[0]), &model.texture[0], GL_STATIC_DRAW);
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 }
 
 
@@ -120,8 +113,8 @@ void Object::draw(std::string drawType)
         
     }
 
-//    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
- //   glBindVertexArray(0);
+    // glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    // glBindVertexArray(0);
     
     glDisableVertexAttribArray(0);
 }

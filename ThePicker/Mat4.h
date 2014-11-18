@@ -1,9 +1,11 @@
 //
-//  Mat4.h
 //  ThePicker
+//  Mat4.h
 //
-//  Created by Emily Chiang on 11/3/14.
-//  Copyright (c) 2014 Emily Chiang. All rights reserved.
+//  Header for: 4x4 Matrix class
+//
+//  Emily Chiang
+//  emily.mchiang@gmail.com
 //
 
 #ifndef __ThePicker__Mat4__

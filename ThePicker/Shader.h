@@ -32,7 +32,7 @@ class Shader
         ~Shader();
     private:
         static const unsigned int NUM_SHADERS = 2;
-        static const unsigned int NUM_UNIFORMS = 2;
+        static const unsigned int NUM_UNIFORMS = 3;
         GLuint _program;
         GLuint _shaders[NUM_SHADERS];
         GLuint _uniforms[NUM_UNIFORMS];

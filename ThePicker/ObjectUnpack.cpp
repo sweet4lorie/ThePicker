@@ -39,12 +39,7 @@ void unpackBox(modelPackage * model, Vec3 min, Vec3 max)
     {
         model->vertex.push_back(tempList[list[i]]);
     }
-    
-    
-    
-    
 }
-
 
 void unpackCompound(modelPackage * model, const std::string file)
 {

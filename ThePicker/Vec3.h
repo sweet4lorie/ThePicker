@@ -1,9 +1,11 @@
 //
-//  Vec3.h
 //  ThePicker
+//  Vec3.h
 //
-//  Created by Emily Chiang on 11/3/14.
-//  Copyright (c) 2014 Emily Chiang. All rights reserved.
+//  Header for: 3D Vector class
+//
+//  Emily Chiang
+//  emily.mchiang@gmail.com
 //
 
 #ifndef __ThePicker__Vec3__
@@ -27,6 +29,7 @@ class Vec3{
         Vec3 operator= (const Vec3 & rhs);
         Vec3 operator- (void) const;
         Vec3 operator* (const float a) const;
+        float operator* (const Vec3& b) const;
         Vec3 operator/ (const float a) const;
         Vec3 operator+ (const Vec3 & v) const;
         Vec3 & operator+= (const Vec3 & v);
@@ -36,7 +39,7 @@ class Vec3{
     
         // normalize
         Vec3 & normalize(void);
-        Vec3 length(void);
+        float length(void);
     
         float _x, _y, _z;
 };

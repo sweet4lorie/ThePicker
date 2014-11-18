@@ -20,11 +20,11 @@
 class Camera
 {
     public:
+        Camera (Vec3 eyePosition, Vec3 upVector);
+        void reset(Vec3 eyePosition, Vec3 upVector);
         void setupCamera(float const win_aspect);
-        void rotateCameraLeft(float degrees, float *eyePosition, float *centerPostion, float *upVector);
-        void rotateCameraUp(float degrees, float *eyePosition, float *centerPosition, float *upVector);
+        void rotate(double mousePX, double mousePY, double mouseRX, double mouseRY0, double r);
     
-        //void setMouseLocation(const float & in_mouseX, const float & in_mouseY);
         ray getRay(float win_width, float win_height, const float & in_mouseX, const float & in_mouseY);
     
         void myPerspective(float fovy, const float aspect, float zNear, float zFar);

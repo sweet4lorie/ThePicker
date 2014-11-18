@@ -1,20 +1,22 @@
 //
-//  Quat.cpp
 //  ThePicker
+//  Quat.cpp
 //
-//  Created by Emily Chiang on 11/9/14.
-//  Copyright (c) 2014 Emily Chiang. All rights reserved.
+//  Quaturnian class
+//
+//  Emily Chiang
+//  emily.mchiang@gmail.com
 //
 
 #include <math.h>
 #include "Quat.h"
 
-Quat::Quat(float * axis, float & a)
+Quat::Quat(Vec3 & axis, float & a)
 {
     float a_rad = a * (M_PI/180);
-    _x = axis[0] * sin(a_rad/2);
-    _y = axis[1] * sin(a_rad/2);
-    _z = axis[2] * sin(a_rad/2);
+    _x = axis._x * sin(a_rad/2);
+    _y = axis._y * sin(a_rad/2);
+    _z = axis._z * sin(a_rad/2);
     _w = cos(a_rad/2);
     QQ_bar();
 }
@@ -27,7 +29,7 @@ void Quat::QQ_bar()
     // reminder: column major
     float tempQ[16] = {
                     _w, _z, -_y, -_x,
-                    -_z, -_w, _x, -_y,
+                    -_z, _w, _x, -_y,
                     _y, -_x, _w, -_z,
                     _x, _y, _z, _w };
     Q = tempQ;

@@ -8,7 +8,16 @@
 //  emily.mchiang@gmail.com
 //
 
+#include <math.h>
 #include "Camera.h"
+
+Camera::Camera(Vec3 eyePosition, Vec3 upVector): _eyePosition(eyePosition), _upVector(upVector) {}
+
+void Camera::reset(Vec3 eyePosition, Vec3 upVector){
+    _eyePosition = eyePosition;
+    _upVector = upVector;
+    myLookAt(_eyePosition, _centerPosition, _upVector);
+}
 
 void Camera::setupCamera(float const win_aspect)
 {
@@ -25,13 +34,38 @@ void Camera::setupCamera(float const win_aspect)
     myLookAt(_eyePosition, _centerPosition, _upVector);
 }
 
-/*
-void Camera::setMouseLocation(const float & in_mouseX, const float & in_mouseY)
+void Camera::rotate(double x1, double y1, double x2, double y2, double r)
 {
-    _mouseX = in_mouseX;
-    _mouseY = in_mouseY;
+    if (x1 != x2 or y1 != y2)
+    {
+        //double min_x;
+        //double max_x;
+        std::vector<Vec3> mouse;
+        mouse.push_back(Vec3(float(x1), float(y1), float(r)));
+        mouse.push_back(Vec3(float(x2), float(y2), float(r)));
+        std::vector<Vec3> P;
+        
+        for (int i = 0; i < 2; i++)
+        {
+            if (sqrt(mouse[i]._x * mouse[i]._x + mouse[i]._y * mouse[i]._y) < r/sqrt(2))
+            {
+                P.push_back(Vec3(mouse[i]._x, mouse[i]._y, sqrt(r * r - (mouse[i]._x * mouse[i]._x + mouse[i]._y * mouse[i]._y))).normalize());
+            } else
+            {
+                P.push_back(Vec3(mouse[i]._x, mouse[i]._y, (r * r) / (2 * sqrt(mouse[i]._x * mouse[i]._x + mouse[i]._y * mouse[i]._y))).normalize());
+            }
+        }
+        
+        Vec3 axis = P[0] ^ P[1];
+        float angle = atan(double(axis.length() / (P[0] * P[1])));
+        
+        Quat Q(axis, angle);
+        Mat4 rm = Q.getRotationMatrix();
+        _upVector = rm * _upVector;
+        _eyePosition = rm * _eyePosition;
+        myLookAt(_eyePosition, _centerPosition, _upVector);
+    }
 }
-*/
 
 ray Camera::getRay(float win_width, float win_height, const float & in_mouseX, const float & in_mouseY)
 {
@@ -129,77 +163,3 @@ void Camera::myLookAt(Vec3 eye, Vec3 center, Vec3 up)
     myModelView = TempMat.Translate(-eye);    //matTranslatefUtil(myModelView, -eyeX, -eyeY, -eyeZ);
     
 }
-/*
-// rotatas camera to the left and right
-void rotateCameraLeft(float degrees, float *eyePosition, float *centerPosition, float *upVector)
-{
-    float tempMatrix[16];
-    float tempEyePosition[3];
-
-    // rotate around the up vector
-    matRotatefUtil(tempMatrix, degrees, upVector[0], upVector[1], upVector[2]);
-
-    // get new eye position
-    matMultVec4fUtil( tempEyePosition, eyePosition, tempMatrix );
-    eyePosition[0] = tempEyePosition[0];
-    eyePosition[1] = tempEyePosition[1];
-    eyePosition[2] = tempEyePosition[2];
-}
-
-// rotates camera up and down
-void rotateCameraUp(float degrees, float *eyePosition, float *centerPosition, float *upVector){
-    // get right first
-    // rotate around x to get the new eye position
-    // rotation matrix with eye position
-    // gaze = center - eye
-    // find new Up = R x G
-
-    float rotationMatrix[16];
-    float gazeVector[3];
-    float rightVector[3];
-    float tempEyePosition[3];
-    float tempUpVector[3];
-
-    // center - eye
-    gazeVector[0] = centerPosition[0] - eyePosition[0];
-    gazeVector[1] = centerPosition[1] - eyePosition[1];
-    gazeVector[2] = centerPosition[2] - eyePosition[2];
-
-    // normalize gaze
-    float magnitudeOfGaze = sqrtf(powf(gazeVector[0],2)+ powf(gazeVector[1],2) + powf(gazeVector[2],2));
-    gazeVector[0] = gazeVector[0]/magnitudeOfGaze;
-    gazeVector[1] = gazeVector[1]/magnitudeOfGaze;
-    gazeVector[2] = gazeVector[2]/magnitudeOfGaze;
-
-    // right = gaze x up
-    vecCrossfUtil(rightVector, gazeVector, upVector);
-
-    // obtain rotation matrix on right vector
-    matRotatefUtil(rotationMatrix, degrees, rightVector[0], rightVector[1], rightVector[2]);
-
-    // get new eye position
-    matMultVec4fUtil( tempEyePosition, eyePosition, rotationMatrix );
-    vecCrossfUtil(rightVector, gazeVector, upVector); // the right vector is null so need value again
-    eyePosition[0] = tempEyePosition[0];
-    eyePosition[1] = tempEyePosition[1];
-    eyePosition[2] = tempEyePosition[2];
-
-    // based on new eye and center, get new gaze
-    gazeVector[0] = centerPosition[0] - eyePosition[0];
-    gazeVector[1] = centerPosition[1] - eyePosition[1];
-    gazeVector[2] = centerPosition[2] - eyePosition[2];
-
-    // normalize new gaze
-    magnitudeOfGaze = sqrtf(powf(gazeVector[0],2)+ powf(gazeVector[1],2) + powf(gazeVector[2],2));
-    gazeVector[0] = gazeVector[0]/magnitudeOfGaze;
-    gazeVector[1] = gazeVector[1]/magnitudeOfGaze;
-    gazeVector[2] = gazeVector[2]/magnitudeOfGaze;
-
-    // get new up vector
-    vecCrossfUtil(tempUpVector, rightVector, gazeVector);
-    upVector[0] = tempUpVector[0];
-    upVector[1] = tempUpVector[1];
-    upVector[2] = tempUpVector[2];
-
-    //printf("right vector: %f, %f, %f\n", rightVector[0], rightVector[1], rightVector[2]);
-}*/

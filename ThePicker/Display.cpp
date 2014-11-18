@@ -33,6 +33,7 @@ Display::Display(int width, int height, std::string title)
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
     glEnable(GL_DEPTH_TEST);
+    glEnable(GL_TEXTURE_2D);
     
 	// Make the window's context current
 	glfwMakeContextCurrent(window);

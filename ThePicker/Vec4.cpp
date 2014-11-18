@@ -1,17 +1,11 @@
 //
-//  Vec4.cpp
 //  ThePicker
-//
-//  Created by Emily Chiang on 11/4/14.
-//  Copyright (c) 2014 Emily Chiang. All rights reserved.
-//
-
-//
 //  Vec4.cpp
-//  ThePicker
 //
-//  Created by Emily Chiang on 11/3/14.
-//  Copyright (c) 2014 Emily Chiang. All rights reserved.
+//  4D Vector class
+//
+//  Emily Chiang
+//  emily.mchiang@gmail.com
 //
 
 #include <math.h>

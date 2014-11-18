@@ -27,17 +27,18 @@ bool checkView(modelPackage * model, float (& pm)[16], Mat4 & mv)
         right[n] = pm[3 + n * 4] - pm[4 * n];
         bottom[n] = pm[3 + n * 4] + pm[4 * n + 1];
         top[n] = pm[3 + n * 4] - pm[4 * n + 1];
-        near[n] = pm[3 + n * 4] + pm[4 * n + 1];
-        far[n] = pm[3 + n * 4] - pm[4 * n + 1];
+        near[n] = pm[3 + n * 4] + pm[4 * n + 2];
+        far[n] = pm[3 + n * 4] - pm[4 * n + 2];
     }
     // normals not pointed correctly
     right[0] *= -1;
     top[1] *= -1;
+    far[2] *= -1;
     // push into planes
     planes.push_back(planeNormalize(left));
     planes.push_back(planeNormalize(right));
-    planes.push_back(planeNormalize(bottom));
-    planes.push_back(planeNormalize(top));
+    //planes.push_back(planeNormalize(bottom));
+    //planes.push_back(planeNormalize(top));
     //planes.push_back(planeNormalize(near));
     //planes.push_back(planeNormalize(far));
     
@@ -47,11 +48,9 @@ bool checkView(modelPackage * model, float (& pm)[16], Mat4 & mv)
         cullTest = true;
         for (int i = 0; i < planes.size(); i++)
         {
-            //std::cout << pointOnPlane(planes[i], model->vertex[v]);
             newPt = Mat4(pm) * mv * model->vertex[v];
             if (pointOnPlane(planes[i], newPt.normalize()) < 0)
             {
-                //std::cout << newPt._x << " " << newPt._y << " " << newPt._z << " = " << pointOnPlane(planes[i], newPt.normalize())<< std::endl;
                 cullTest = false;
             }
         }
@@ -60,8 +59,7 @@ bool checkView(modelPackage * model, float (& pm)[16], Mat4 & mv)
             returnTest = false;
         }
     }
-    return returnTest;
-    
+    return true;
 }
 
 float pointOnPlane (plane plane, Vec3 point)

@@ -38,6 +38,17 @@ Shader::Shader(const std::string & file)
     // uniform variables
     _uniforms[0] = glGetUniformLocation(_program, "ModelViewMatrix");
     _uniforms[1] = glGetUniformLocation(_program, "ProjectionMatrix");
+    _uniforms[2] = glGetUniformLocation(_program, "texture");
+}
+
+Shader::~Shader()
+{
+    for(unsigned int i = 0; i < NUM_SHADERS; i++)
+    {
+        glDetachShader(_program, _shaders[i]);
+        glDeleteShader(_shaders[i]);
+    }
+    glDeleteProgram(_program);
 }
 
 void Shader::bind()
@@ -58,7 +69,7 @@ void Shader::update(const Camera & camera, Object & obj)
     
     glUniformMatrix4fv(_uniforms[0], 1, GL_FALSE, &MV[0]);
     glUniformMatrix4fv(_uniforms[1], 1, GL_FALSE, &P[0]);
-    
+    glUniform1i(_uniforms[2], 0);
 }
 
 void Shader::setColor(float r, float g, float b, float a)
@@ -68,17 +79,6 @@ void Shader::setColor(float r, float g, float b, float a)
     GLint myColor = glGetUniformLocation(_program, "color");
     glUniform4fv(myColor, 1, colorVec4);
 }
-
-Shader::~Shader()
-{
-    for(unsigned int i = 0; i < NUM_SHADERS; i++)
-    {
-        glDetachShader(_program, _shaders[i]);
-        glDeleteShader(_shaders[i]);
-    }
-    glDeleteProgram(_program);
-}
-
 
 static GLuint CreateShader(const std::string & text, GLenum shaderType)
 {

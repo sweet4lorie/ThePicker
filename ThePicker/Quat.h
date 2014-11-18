@@ -1,9 +1,11 @@
 //
-//  Quat.h
 //  ThePicker
+//  Quat.h
 //
-//  Created by Emily Chiang on 11/9/14.
-//  Copyright (c) 2014 Emily Chiang. All rights reserved.
+//  Header for: Quaturnian class
+//
+//  Emily Chiang
+//  emily.mchiang@gmail.com
 //
 
 #ifndef __ThePicker__Quat__
@@ -11,6 +13,7 @@
 
 #include <stdio.h>
 #include "Mat4.h"
+#include "Vec3.h"
 
 //#define M_PI 3.14159265358979323846
 
@@ -20,7 +23,7 @@ class Quat
         Mat4 Q;
         Mat4 Q_bar;
     
-        Quat(float * axis, float & a);
+        Quat(Vec3 & axis, float & a);
         Quat(float x, float y, float z, float w);
     
         Quat operator+ (const Quat & q) const;

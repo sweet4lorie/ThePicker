@@ -1,9 +1,11 @@
 //
-//  Vec3.cpp
 //  ThePicker
+//  Vec3.cpp
 //
-//  Created by Emily Chiang on 11/3/14.
-//  Copyright (c) 2014 Emily Chiang. All rights reserved.
+//  3D Vector class
+//
+//  Emily Chiang
+//  emily.mchiang@gmail.com
 //
 
 #include <math.h>
@@ -71,6 +73,11 @@ bool Vec3::operator== (const Vec3 & v) const
     return _x == v._x && _y == v._y && _z == v._z;
 }
 
+// dot
+float Vec3::operator* (const Vec3& v) const {
+	return (_x * v._x + _y * v._y + _z * v._z);
+}
+
 // cross
 Vec3 Vec3::operator^ (const Vec3 & v) const
 {
@@ -91,7 +98,7 @@ Vec3 & Vec3::normalize(void)
 	return *this;
 }
 
-Vec3 Vec3::length(void)
+float Vec3::length(void)
 {
     return  sqrt(_x * _x + _y * _y + _z * _z) ;
 }
